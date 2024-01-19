@@ -5,7 +5,6 @@ export const app = css({
   gap: 16,
   position: 'relative',
   table: {
-    border: '1px solid black',
     thead: { fontWeight: 'bold' },
     tr: { '&:hover': { backgroundColor: 'white' } },
     td: { padding: 6 },

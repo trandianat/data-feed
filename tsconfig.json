@@ -15,7 +15,7 @@
         "isolatedModules": true,
         "noEmit": false,
         "jsx": "react-jsx",
-        "baseUrl": "src", // for importing absolute paths
+        "baseUrl": "src",
         "allowUnreachableCode": false,
         "noImplicitReturns": true,
         "noUnusedLocals": false,
@@ -23,5 +23,5 @@
         "strictNullChecks": true,
         "jsxImportSource": "@emotion/react",
     },
-    "include": ["src", "src/declarations.d.ts",]
+    "include": ["src"]
 }

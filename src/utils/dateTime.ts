@@ -10,7 +10,7 @@ export const formatDateTime = (date: Date) => {
   const formattedMonth = month < 10 ? '0' + month : month;
   const formattedDay = day < 10 ? '0' + day : day;
   const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
-  const formattedTime = `${hour}:${minute < 10 ? '0' + minute : minute}`;
+  const formattedTime = `${hour < 10 ? '0' + hour : hour}:${minute < 10 ? '0' + minute : minute}`;
   const formattedDateTime = `${formattedDate}T${formattedTime}:00.000Z`;
   return [formattedDate, formattedTime, formattedDateTime];
 };

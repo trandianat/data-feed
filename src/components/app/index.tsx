@@ -1,4 +1,4 @@
-import { GraphQLResult, generateClient } from 'aws-amplify/api';
+import { generateClient, GraphQLResult } from 'aws-amplify/api';
 import { useEffect, useState } from 'react';
 import * as styles from 'components/app/styles';
 import { Modal } from 'components/modal';
