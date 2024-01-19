@@ -1,57 +1,138 @@
+import { generateClient } from 'aws-amplify/api';
 import Bowser from 'bowser';
 import { ChangeEvent, useEffect, useState } from 'react';
 import * as styles from 'components/modal/styles';
-import { Topic } from 'utils/constants';
+import { createTweet, updateTweet } from 'graphql/mutations';
+import { ModalType, Topic } from 'utils/constants';
+import { formatDateTime, getDate, getTime } from 'utils/dateTime';
+import { ModalInfo, Tweet } from 'utils/types';
+import {
+  randomDate,
+  randomNumber,
+  randomText,
+  randomTopic,
+} from 'utils/random';
 
-export const Modal = ({ setShowModal }: any): JSX.Element => {
+type ModalProps = {
+  getTweets: () => void;
+  info: ModalInfo;
+  setModal: React.Dispatch<React.SetStateAction<ModalInfo>>;
+};
+
+export const Modal = ({
+  getTweets,
+  info,
+  setModal,
+}: ModalProps): JSX.Element => {
+  const [client] = useState(generateClient());
   const [defaultDate, setDefaultDate] = useState<string>('');
-  const [defaultSource, setDefaultSource] = useState<string>('');
-  const [input, setInput] = useState<Record<string, string | number>>({
-    date: '',
-    source: '',
-    content: '',
-    topic: '',
-    followers: 0,
-    following: 0,
-  });
+  const [defaultTime, setDefaultTime] = useState<string>('');
+  const [input, setInput] = useState<Partial<Tweet>>({});
+
+  const addTweet = async () => {
+    try {
+      await client.graphql({ query: createTweet, variables: { input } });
+      getTweets();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const editTweet = async () => {
+    try {
+      await client.graphql({ query: updateTweet, variables: { input } });
+      getTweets();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    const formattedMonth = month < 10 ? '0' + month : month;
-    const formattedDay = day < 10 ? '0' + day : day;
-    const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
-    setDefaultDate(formattedDate);
+    (document.getElementById('topic') as HTMLSelectElement).value =
+      input.topic || '';
+  }, [input]);
+
+  useEffect(() => {
+    const [date, time, dateTime] = formatDateTime(new Date());
+    setDefaultDate(date);
+    setDefaultTime(time);
 
     const browser = Bowser.getParser(window.navigator.userAgent);
-    setDefaultSource(`${browser.getBrowserName()} on ${browser.getOSName()}`);
+    const browserOs = `${browser.getBrowserName()} on ${browser.getOSName()}`;
+
+    const newTweet = {
+      date: dateTime,
+      source: browserOs,
+      content: '',
+      topic: '',
+      followers: 0,
+      following: 0,
+    };
+    setInput(info.type === ModalType.NEW ? newTweet : info.tweet);
   }, []);
 
   return (
     <div css={styles.modal}>
-      <h2>New Tweet</h2>
-      <div id="form">
+      <h2>{info.type} Tweet</h2>
+      <button
+        onClick={() => {
+          const topic = randomTopic();
+          (document.getElementById('topic') as HTMLSelectElement).value = topic;
+          setInput(input => ({
+            id: input.id,
+            date: randomDate(),
+            source: randomText(),
+            content: randomText(),
+            topic,
+            followers: randomNumber(),
+            following: randomNumber(),
+          }));
+        }}
+      >
+        Randomize
+      </button>
+      <div className="input">
         <label htmlFor="date">Date</label>
         <input
-          defaultValue={defaultDate}
+          defaultValue={input.date ? getDate(input.date) : defaultDate}
           id="date"
           onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-            setInput(input => ({ ...input, date: value }));
+            setInput(input => ({
+              ...input,
+              date: input.date?.replace(getDate(input.date), value),
+            }));
           }}
           type="date"
         />
+      </div>
+      <div className="input">
+        <label htmlFor="time">Time</label>
+        <input
+          defaultValue={input.date ? getTime(input.date) : defaultTime}
+          id="time"
+          onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+            setInput(input => ({
+              ...input,
+              date: input.date?.replace(getTime(input.date), value),
+            }));
+          }}
+          type="time"
+        />
+      </div>
+      <div className="input">
         <label htmlFor="source">Source</label>
         <input
-          defaultValue={defaultSource}
+          defaultValue={input.source}
           id="source"
           onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
             setInput(input => ({ ...input, source: value }));
           }}
         />
+      </div>
+      <div className="input">
         <label htmlFor="content">Content</label>
         <textarea
+          defaultValue={input.content}
           id="content"
           maxLength={280}
           onChange={({
@@ -60,6 +141,8 @@ export const Modal = ({ setShowModal }: any): JSX.Element => {
             setInput(input => ({ ...input, content: value }));
           }}
         />
+      </div>
+      <div className="input">
         <label htmlFor="topic">Topic</label>
         <select
           defaultValue=""
@@ -75,31 +158,46 @@ export const Modal = ({ setShowModal }: any): JSX.Element => {
             <option key={topic}>{topic}</option>
           ))}
         </select>
+      </div>
+      <div className="input">
         <label htmlFor="followers">Number of followers</label>
         <input
+          defaultValue={input.followers}
           id="followers"
           min={0}
           onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-            setInput(input => ({ ...input, followers: value }));
+            setInput(input => ({ ...input, followers: Number(value) }));
           }}
           type="number"
         />
+      </div>
+      <div className="input">
         <label htmlFor="following">Number of following</label>
         <input
+          defaultValue={input.following}
           id="following"
           min={0}
           onChange={({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
-            setInput(input => ({ ...input, following: value }));
+            setInput(input => ({ ...input, following: Number(value) }));
           }}
           type="number"
         />
+      </div>
+      <div className="actions">
         <button
           onClick={() => {
-            console.log(input);
-            setShowModal(false);
+            if (info.type === ModalType.NEW) {
+              addTweet();
+            } else {
+              editTweet();
+            }
+            setModal({ tweet: {}, type: '' });
           }}
         >
           Submit
+        </button>
+        <button onClick={() => setModal({ tweet: {}, type: '' })}>
+          Cancel
         </button>
       </div>
     </div>

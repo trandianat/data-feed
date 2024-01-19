@@ -1,10 +1,31 @@
 html {
     background-color: aliceblue;
-    font-family: Arial;
+    font: 1rem Arial;
     height: 100%;
 }
 
-button, input, select, textarea {
-    font-family: Arial;
+button {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 6px 12px;
+    &:hover {
+        background-color: aliceblue;
+        cursor: pointer;
+    }
+}
+
+h1, h2 {
+    margin: 0;
+}
+
+input, select {
+    font: .875rem Arial;
     padding: 4px;
+}
+
+textarea {
+    font: .875rem Arial;
+    padding: 8px;
+    resize: none;
 }

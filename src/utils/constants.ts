@@ -1,3 +1,8 @@
+export enum ModalType {
+  EDIT = 'Edit',
+  NEW = 'New',
+}
+
 export enum Topic {
   ARTS_CULTURE = 'Arts & Culture',
   BUSINESS_FINANCE = 'Business & Finance',
