@@ -1,0 +1,10 @@
+html {
+    background-color: aliceblue;
+    font-family: Arial;
+    height: 100%;
+}
+
+button, input, select, textarea {
+    font-family: Arial;
+    padding: 4px;
+}
