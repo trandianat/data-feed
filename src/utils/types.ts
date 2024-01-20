@@ -2,6 +2,7 @@ import { ModalType } from 'utils/constants';
 
 export type Tweet = {
   id: string;
+  createdAt: string;
   date: string;
   source: string;
   content: string;

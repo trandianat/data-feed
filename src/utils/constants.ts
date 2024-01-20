@@ -22,3 +22,20 @@ export enum Topic {
   TECHNOLOGY = 'Technology',
   TRAVEL = 'Travel',
 }
+
+export enum Sort {
+  DATE_ASCENDING = 'Date ascending',
+  DATE_DESCENDING = 'Date descending',
+  TIME_ASCENDING = 'Time ascending',
+  TIME_DESCENDING = 'Time descending',
+  SOURCE_ASCENDING = 'Source ascending',
+  SOURCE_DESCENDING = 'Source descending',
+  CONTENT_ASCENDING = 'Content ascending',
+  CONTENT_DESCENDING = 'Content descending',
+  TOPIC_ASCENDING = 'Topic ascending',
+  TOPIC_DESCENDING = 'Topic descending',
+  FOLLOWERS_ASCENDING = 'Followers ascending',
+  FOLLOWERS_DESCENDING = 'Followers descending',
+  FOLLOWING_ASCENDING = 'Following ascending',
+  FOLLOWING_DESCENDING = 'Following descending',
+}

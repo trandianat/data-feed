@@ -4,6 +4,17 @@ export const app = css({
   display: 'grid',
   gap: 16,
   position: 'relative',
+  '.min-width': { width: 'fit-content' },
+  '.filters': {
+    display: 'flex',
+    gap: 16,
+    '.filter': {
+      display: 'grid',
+      gap: 4,
+      select: { maxWidth: 'fit-content' },
+    },
+    '#reset': { alignSelf: 'end', height: 'fit-content', padding: '8px 12px' },
+  },
   table: {
     thead: { fontWeight: 'bold' },
     tr: { '&:hover': { backgroundColor: 'white' } },
@@ -15,5 +26,4 @@ export const app = css({
       gridTemplateColumns: 'repeat(2, auto)',
     },
   },
-  '.new': { width: 'fit-content' },
 });

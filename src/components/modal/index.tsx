@@ -1,22 +1,24 @@
 import { generateClient } from 'aws-amplify/api';
 import Bowser from 'bowser';
-import { ChangeEvent, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import * as styles from 'components/modal/styles';
+import { Select } from 'components/select';
 import { createTweet, updateTweet } from 'graphql/mutations';
 import { ModalType, Topic } from 'utils/constants';
 import { formatDateTime, getDate, getTime } from 'utils/dateTime';
 import { ModalInfo, Tweet } from 'utils/types';
-import {
-  randomDate,
-  randomNumber,
-  randomText,
-  randomTopic,
-} from 'utils/random';
+import * as random from 'utils/random';
 
 type ModalProps = {
   getTweets: () => void;
   info: ModalInfo;
-  setModal: React.Dispatch<React.SetStateAction<ModalInfo>>;
+  setModal: Dispatch<SetStateAction<ModalInfo>>;
 };
 
 export const Modal = ({
@@ -76,16 +78,16 @@ export const Modal = ({
       <h2>{info.type} Tweet</h2>
       <button
         onClick={() => {
-          const topic = randomTopic();
+          const topic = random.topic();
           (document.getElementById('topic') as HTMLSelectElement).value = topic;
           setInput(input => ({
             id: input.id,
-            date: randomDate(),
-            source: randomText(),
-            content: randomText(),
+            date: random.date(),
+            source: random.browserOs(),
+            content: random.text(),
             topic,
-            followers: randomNumber(),
-            following: randomNumber(),
+            followers: random.number(),
+            following: random.number(),
           }));
         }}
       >
@@ -144,20 +146,16 @@ export const Modal = ({
       </div>
       <div className="input">
         <label htmlFor="topic">Topic</label>
-        <select
-          defaultValue=""
-          id="topic"
-          onChange={({ target: { value } }: ChangeEvent<HTMLSelectElement>) => {
+        <Select
+          defaultValue="Select a topic"
+          handleChange={({
+            target: { value },
+          }: ChangeEvent<HTMLSelectElement>) => {
             setInput(input => ({ ...input, topic: value }));
           }}
-        >
-          <option disabled value="">
-            Select a topic
-          </option>
-          {Object.values(Topic).map(topic => (
-            <option key={topic}>{topic}</option>
-          ))}
-        </select>
+          id="topic"
+          items={Object.values(Topic)}
+        />
       </div>
       <div className="input">
         <label htmlFor="followers">Number of followers</label>

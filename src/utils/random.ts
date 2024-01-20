@@ -1,6 +1,7 @@
+import Bowser from 'bowser';
 import { Topic } from 'utils/constants';
 
-const text = [
+const loremIpsum = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Suspendisse sit amet mi maximus, egestas mi non, sodales arcu.',
   'Fusce at lacus elit.',
@@ -23,9 +24,22 @@ const text = [
   'Sed ut efficitur nunc.',
 ];
 
-export const randomDate = () =>
-  new Date((new Date() as any) - Math.random() * 1e12).toISOString();
-export const randomNumber = () => Math.floor(Math.random() * 1000000);
-export const randomText = () => text[Math.floor(Math.random() * text.length)];
-export const randomTopic = () =>
+const browser = () =>
+  Object.values(Bowser.BROWSER_MAP)[
+    Math.floor(Math.random() * Object.values(Bowser.BROWSER_MAP).length)
+  ];
+const os = () =>
+  Object.values(Bowser.OS_MAP)[
+    Math.floor(Math.random() * Object.values(Bowser.OS_MAP).length)
+  ];
+
+export const browserOs = () => `${browser()} on ${os()}`;
+export const date = () =>
+  new Date(
+    (new Date() as unknown as number) - Math.random() * 1e12,
+  ).toISOString();
+export const number = () => Math.floor(Math.random() * 100000);
+export const text = () =>
+  loremIpsum[Math.floor(Math.random() * loremIpsum.length)];
+export const topic = () =>
   Object.values(Topic)[Math.floor(Math.random() * Object.values(Topic).length)];
