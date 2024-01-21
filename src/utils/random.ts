@@ -34,11 +34,17 @@ const os = () =>
   ];
 
 export const browserOs = () => `${browser()} on ${os()}`;
-export const date = () =>
-  new Date(
-    (new Date() as unknown as number) - Math.random() * 1e12,
-  ).toISOString();
-export const number = () => Math.floor(Math.random() * 100000);
+export const dateWithinPastWeek = () => {
+  const today = new Date();
+  const lastMonth = new Date();
+  lastMonth.setDate(today.getDate() - 7);
+  const randomDate = new Date(
+    lastMonth.getTime() +
+      Math.random() * (today.getTime() - lastMonth.getTime()),
+  );
+  return randomDate.toISOString();
+};
+export const numberUnder100K = () => Math.floor(Math.random() * 100000);
 export const text = () =>
   loremIpsum[Math.floor(Math.random() * loremIpsum.length)];
 export const topic = () =>

@@ -31,6 +31,7 @@
     "@emotion/react": "^11.11.3",
     "aws-amplify": "^6.0.12",
     "bowser": "^2.11.0",
+    "chart.js": "^4.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3"

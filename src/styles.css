@@ -1,7 +1,10 @@
 html {
     background-color: aliceblue;
     font: .875rem Arial;
-    height: 100%;
+}
+
+body {
+    margin: 0;
 }
 
 button {
@@ -10,7 +13,7 @@ button {
     border-radius: 4px;
     padding: 6px 12px;
     &:hover {
-        background-color: aliceblue;
+        background-color: #99CCF5;
         cursor: pointer;
     }
 }
