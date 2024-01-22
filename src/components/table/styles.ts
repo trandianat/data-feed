@@ -6,16 +6,8 @@ export const table = css({
   '.filters': {
     display: 'flex',
     gap: 12,
-    '.filter': {
-      display: 'grid',
-      gap: 4,
-      select: { maxWidth: 'fit-content' },
-    },
-    '#reset': {
-      alignSelf: 'end',
-      height: 'fit-content',
-      padding: '8px 12px',
-    },
+    '.filter': { display: 'grid', gap: 4 },
+    '#reset': { alignSelf: 'end', padding: '8px 12px' },
   },
   table: {
     thead: { fontWeight: 'bold' },

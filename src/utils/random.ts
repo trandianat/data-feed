@@ -36,11 +36,10 @@ const os = () =>
 export const browserOs = () => `${browser()} on ${os()}`;
 export const dateWithinPastWeek = () => {
   const today = new Date();
-  const lastMonth = new Date();
-  lastMonth.setDate(today.getDate() - 7);
+  const pastWeek = new Date();
+  pastWeek.setDate(today.getDate() - 7);
   const randomDate = new Date(
-    lastMonth.getTime() +
-      Math.random() * (today.getTime() - lastMonth.getTime()),
+    pastWeek.getTime() + Math.random() * (today.getTime() - pastWeek.getTime()),
   );
   return randomDate.toISOString();
 };
